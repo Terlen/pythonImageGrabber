@@ -2,12 +2,17 @@ import re
 import urllib.request
 try:
     import feedparser
-    main()
 except ModuleNotFoundError:
     print("Feedparser not found.\nPlease install Feedparser and execute again.")
+    exit()
+
+def redditSelect():
+    subReddit = input("Please enter the subreddit you want to pull images from: ")
+    return subReddit.lower()
 
 def main():
-    awwPics = feedparser.parse('https://www.reddit.com/r/aww/top/.rss?sort=top&t=week')
+    target = redditSelect()
+    awwPics = feedparser.parse('https://www.reddit.com/r/'+target+'/top/.rss?sort=top&t=week')
     # Iterate through each post fetched from RSS
     for x in range(0,len(awwPics.entries)):
     # Dig image links out from RSS feed junk. Only finds JPEG links for now, could expand to other formats later
@@ -26,3 +31,5 @@ def main():
             print('Downloaded!')
         except AttributeError:
             continue
+
+main()
