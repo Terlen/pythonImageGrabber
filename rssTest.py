@@ -1,10 +1,16 @@
-import re
+import re, pip
 import urllib.request
 try:
     import feedparser
 except ModuleNotFoundError:
-    print("Feedparser not found.\nPlease install Feedparser and execute again.")
-    exit()
+    print("Feedparser not found.\nWould you like to install Feedparser now? (y/n)")
+    installConfirm = input()
+    print(installConfirm.lower())
+    if installConfirm.lower() == "y":
+        print("Running install?")
+        pip.main(["install", "feedparser"])
+    else:
+        exit()
 
 def redditSelect():
     subReddit = input("Please enter the subreddit you want to pull images from: ")
