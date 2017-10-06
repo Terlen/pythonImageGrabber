@@ -15,7 +15,7 @@ def main():
     awwPics = feedparser.parse('https://www.reddit.com/r/'+target+'/top/.rss?sort=top&t=week')
     # Iterate through each post fetched from RSS
     for x in range(0,len(awwPics.entries)):
-    # Dig image links out from RSS feed junk. Only finds JPEG links for now, could expand to other formats later
+    # Dig image links out from RSS feed junk. Only finds JPEG, gif, and Imgur gifv links for now, could expand to other formats later
         awwPicsImage = re.search('https:\/\/i\.redd\.it\/.*\.jpg|https:\/\/i\.redd\.it\/.*\.gif|https:\/\/i\.imgur\.com\/.*\.gifv', awwPics.entries[x].content[0].value)
         try:
             print(awwPicsImage.group(0))
@@ -25,9 +25,17 @@ def main():
             if (file.rsplit('.')[-1] == 'gifv'):
                 gifvURL = 'https://imgur.com/download/'+file.rsplit('.')[-2]
                 print(gifvURL)
-                urllib.request.urlretrieve(gifvURL, file.rsplit('v')[-2])
+                try:
+                    urllib.request.urlretrieve(gifvURL, file.rsplit('v')[-2])
+                except urllib.error.URLError as e:
+                    print("Download error: ",e.reason)
+                    continue
             else:
-                urllib.request.urlretrieve(awwPicsImage.group(0), file)
+                try:
+                    urllib.request.urlretrieve(awwPicsImage.group(0), file)
+                except urllib.error.URLError as e:
+                    print("Download error: ",e)
+                    continue
             print('Downloaded!')
         except AttributeError:
             continue
