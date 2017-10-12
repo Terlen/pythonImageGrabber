@@ -1,13 +1,11 @@
 import re, pip
 import urllib.request
+# Check for feedparser dependency. If missing, offer installation.
 try:
     import feedparser
 except ModuleNotFoundError:
     print("Feedparser not found.\nWould you like to install Feedparser now? (y/n)")
-    installConfirm = input()
-    print(installConfirm.lower())
-    if installConfirm.lower() == "y":
-        print("Running install?")
+    if input().lower() == "y":
         pip.main(["install", "feedparser"])
     else:
         exit()
@@ -40,10 +38,11 @@ def main():
                 try:
                     urllib.request.urlretrieve(awwPicsImage.group(0), file)
                 except urllib.error.URLError as e:
-                    print("Download error: ",e)
+                    print("Download error: ",e.reason)
                     continue
             print('Downloaded!')
         except AttributeError:
             continue
-
-main()
+# Main function call
+if __name__ == "__main__":
+    main()
