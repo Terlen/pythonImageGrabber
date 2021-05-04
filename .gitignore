@@ -47,3 +47,4 @@ Temporary Items
 .apdisk
 *.jpg
 *.gif
+.vscode/settings.json
