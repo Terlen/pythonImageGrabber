@@ -2,9 +2,9 @@ import re
 import urllib.request
 try:
     import feedparser
-    main()
 except ModuleNotFoundError:
     print("Feedparser not found.\nPlease install Feedparser and execute again.")
+    exit
 
 def main():
     awwPics = feedparser.parse('https://www.reddit.com/r/aww/top/.rss?sort=top&t=week')
@@ -26,3 +26,5 @@ def main():
             print('Downloaded!')
         except AttributeError:
             continue
+
+main()
